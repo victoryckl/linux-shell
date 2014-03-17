@@ -21,6 +21,7 @@
 #        force group = <user-name>
 #        available = yes
 #        browseable = yes
+#        veto files=/.*/
 #  
 # 修改完后，重启samba:
 # smbd restart
@@ -29,7 +30,22 @@
 # 关闭selinux:
 # setenforce 0
 #
-
+#创建所有用户都可以访问的文件夹共享：
+#mkdir /home/public
+#chmod 777 /home/public
+#smb.conf中：security = user修改为security = share
+#添加：
+#[public]
+#        comment = public
+#        path = /home/public
+#        public = yes
+#        writeable = yes
+#        create mask = 0777
+#        directory mask = 0777
+#        available = yes 
+#        browseable = yes
+#        veto files=/.*/
+#
 
 name=$1
 if [ -z "$name" ]; then
@@ -62,6 +78,7 @@ cat << EOF
         force group = $name
         available = yes
         browseable = yes
+        veto files=/.*/
 EOF
 ) >> /etc/samba/smb.conf
 
