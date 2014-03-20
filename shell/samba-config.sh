@@ -53,7 +53,7 @@ if [ -z "$name" ]; then
 	exit 1
 fi
 
-id user >/dev/null 2>&1
+id $name >/dev/null 2>&1
 if [ $? != 0 ]; then
 	echo "error: $name is not exist!"
 	exit 2
@@ -78,7 +78,6 @@ cat << EOF
         force group = $name
         available = yes
         browseable = yes
-        veto files=/.*/
 EOF
 ) >> /etc/samba/smb.conf
 
